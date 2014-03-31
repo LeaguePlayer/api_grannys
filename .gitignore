@@ -1,0 +1,19 @@
+#for capistrano
+Capfile
+#---
+
+.idea
+
+framework
+/protected/config/overrides/environment.php
+/protected/config/overrides/local.php
+/protected/config/overrides/params.php
+
+/uploads
+/gallery
+*~
+/index.php
+protected/yiic.php
+protected/yiic.bat
+protected/cron.php
+/upload
