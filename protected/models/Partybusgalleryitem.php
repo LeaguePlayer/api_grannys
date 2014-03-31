@@ -61,10 +61,10 @@ class Partybusgalleryitem extends EActiveRecord
 				'idAttribute' => 'gllr_gallery_id',
 				'versions' => array(
 					'small' => array(
-						'adaptiveResize' => array(90, 90),
+						'adaptiveResize' => array(137, 137),
 					),
 					'medium' => array(
-						'resize' => array(600, 500),
+						'adaptiveResize' => array(2000, 2000),
 					)
 				),
 				'name' => true,

@@ -4,20 +4,26 @@ class JsonController extends Controller
 {
 	protected $domain_grannys = "http://grannysbar.ru";
 	protected $domain_barservice = "http://bar-tm.ru";
-	protected $domain_app = "http://grannys.loc";
+	protected $domain_app = "http://grannys.amobile-studio.ru";
 	
 	public function actionGetGallery($site="grannys", $debug = false)
 	{
 		switch($site)
 		{
 			case 'grannys':
-				$domain = $this->domain_grannys;
-				$images = GalleriesItems::model()->findAll(array('condition'=>" d2 = '' ", 'order'=>'id DESC'));
+          //	$domain = $this->domain_grannys;
+          //	$images = GalleriesItems::model()->findAll(array('condition'=>" d2 = '' ", 'order'=>'id DESC'));
+          
+          $domain = $this->domain_app;
+				$images = Partybusgalleryitem::model()->findByPk(3)->getGalleryPhotos();
 			break;
 			
 			case 'barservice':
-				$domain = $this->domain_barservice;
-				$images = BarserviceGalleriesItems::model()->findAll(array('order'=>'id DESC'));
+          //$domain = $this->domain_barservice;
+          //	$images = BarserviceGalleriesItems::model()->findAll(array('order'=>'id DESC'));
+          
+          $domain = $this->domain_app;
+				$images = Partybusgalleryitem::model()->findByPk(2)->getGalleryPhotos();
 			break;
 			
 			case 'partybus':
@@ -44,15 +50,22 @@ class JsonController extends Controller
 				switch($site)
 				{
 					case 'grannys':
-						$path_thumb = "{$domain}/files/gallery/{$image->page}/thumb/{$image->filename}";
-						$path_big = "{$domain}/files/gallery/{$image->page}/img/{$image->filename}";
+                  //	$path_thumb = "{$domain}/files/gallery/{$image->page}/thumb/{$image->filename}";
+                  //	$path_big = "{$domain}/files/gallery/{$image->page}/img/{$image->filename}";
+                  
+                  $path_thumb = "{$domain}{$image->getUrl('small')}";
+						$path_big = "{$domain}{$image->getUrl('medium')}";
 					break;
 					
 					case 'barservice':
 					
-						$page_barservice = BarservicePages::model()->findByPk($image->page);
-						$path_thumb = "{$domain}/files/gallery/{$page_barservice->path}/thumb/{$image->filename}";
-						$path_big = "{$domain}/files/gallery/{$page_barservice->path}/img/{$image->filename}";
+                  //	$page_barservice = BarservicePages::model()->findByPk($image->page);
+                  //	$path_thumb = "{$domain}/files/gallery/{$page_barservice->path}/thumb/{$image->filename}";
+                  //	$path_big = "{$domain}/files/gallery/{$page_barservice->path}/img/{$image->filename}";
+                  
+                  		$path_thumb = "{$domain}{$image->getUrl('small')}";
+						$path_big = "{$domain}{$image->getUrl('medium')}";
+						
 						
 					break;
 					
@@ -103,14 +116,14 @@ class JsonController extends Controller
 		switch($site)
 		{
 			case 'grannys':
-				$page = Page::model()->findByPk(1);
+				$page = Page::model()->findByPk(8);
 			break;
 			case 'iceman':
-			echo $type;
-				$page = ($type=="contacts") ? Page::model()->findByPk(2) : Page::model()->findByPk(3);
+          //echo $type;
+				$page = ($type=="contacts") ? Page::model()->findByPk(5) : Page::model()->findByPk(6);
 			break;
 			case 'partybus':
-				$page = Page::model()->findByPk(4);
+				$page = Page::model()->findByPk(7);
 			break;
 		}
 		
@@ -211,12 +224,24 @@ class JsonController extends Controller
 			
 			   $child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id not in (93, 31, 32, 34)", 'params' => array( ':id_page'=>$id_page ) ) );
 			   
-			   $childs = CHtml::listData($child_pages,'id','rusname');
+			  // $childs = CHtml::listData($child_pages,'id','rusname');
 			   
 			   if(!$show_page)
 			   {
-				   $childs[$id_page] = $p_title; 
+				   $childs[0]['title'] = $p_title; 
+				   $childs[0]['id_page'] = $id_page; 
 			   }
+			   
+			   	
+				$n = 1;
+				foreach ($child_pages as $p_child)
+				{
+					$childs[$n]['title'] = $p_child->rusname;
+					$childs[$n]['id_page'] = $p_child->id;
+					
+					$n++;
+				}
+			   
 			   
 			
 				$response['title'] = $page->title;
@@ -226,6 +251,8 @@ class JsonController extends Controller
 				
 				
 				$response['text'] = preg_replace("/\<img.+src=('|\")(.*)('|\")/", "<img src=\"http://bar-tm.ru$2", $response['text']);
+				
+				
 			
 		}
 		else

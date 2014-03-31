@@ -30,6 +30,6 @@ class EnvironmentCommand extends CConsoleCommand
             Yii::app()->end();
         }
 
-        echo "Готово\n";
+        echo "Success\n";
     }
 }
