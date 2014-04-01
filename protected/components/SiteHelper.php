@@ -120,4 +120,24 @@ class SiteHelper {
 	    $message = str_replace("\n.", "\n..", $message);
         return mail($to,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
     }
+	
+	public static function getParameter($n = false)
+	{
+		$array = array("мл", "гр");
+		
+		if(is_numeric($n))
+			return $array[$n];
+		else
+			return $array;
+	}
+	
+	public static function getCategoryBoardmenu($n = false)
+	{
+		$array = array("Алкогольные коктейли", "Безалкогольные коктейли","Горячие закуски","Холодные закуски","Салаты","Десерты","Супы");
+		
+		if(is_numeric($n))
+			return $array[$n];
+		else
+			return $array;
+	}
 }

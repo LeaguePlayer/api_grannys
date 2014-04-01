@@ -355,4 +355,78 @@ class JsonController extends Controller
 		// http://grannysbar.ru/files/gallery/97/thumb/bQ1uqa8h0kSoWWgIzOBsHRBhv3zBqL.jpg - thumb
 	}
 	
+	
+	
+	public function actionGetMenu($debug = false)
+	{
+		 $Boardmenu = Boardmenu::model()->findAll("status = :status",array(':status'=>Boardmenu::STATUS_PUBLISH));
+		
+		
+		if(!$debug)
+			header('Content-type: application/json');
+		$json = array();
+		
+		
+		
+		
+		if( count($Boardmenu) > 0 )
+		{ 
+			$result = 1;
+			
+			$n = 0;
+			foreach($Boardmenu as $menu)
+			{
+				$response[$n]['type']['id'] = $menu->id_type;
+				$response[$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
+				$response[$n]['title'] = $menu->title;
+				$response[$n]['price'] = $menu->price;
+				
+				if( count($menu->composition) > 0 )
+				{
+					$z = 0;
+					$string_composition = "";
+						foreach($menu->composition as $composition)
+						{
+							$z++;
+							$param = SiteHelper::getParameter($composition->parameter);
+							$string_composition .= "{$composition->composition} {$param} {$composition->title}";
+							
+							if(count($menu->composition)!=$z)
+								$string_composition .= ", ";
+								//$response[$n]['composition'][$z]['title'] = $composition->title;
+								//$response[$n]['composition'][$z]['composition'] = $composition->composition;
+								//$response[$n]['composition'][$z]['parameter'] = SiteHelper::getParameter($composition->parameter);
+								
+						}
+						$response[$n]['composition'] = $string_composition;
+				}
+				
+				$n++;
+			}
+			
+			
+				
+				
+		}
+		else
+		{
+			$result = 0;
+			$error = "Нет записей по меню";
+		}
+		
+		$json['result'] = $result;
+		$json['error'] = $error;
+		$json['response'] = $response;
+		
+		
+    	 if($debug)
+		{
+			echo "<pre>";
+				print_r($json);
+			echo "</pre>";
+		}
+		else
+    	 	echo CJSON::encode($json);	
+	}
+	
 }
