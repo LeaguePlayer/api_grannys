@@ -376,10 +376,10 @@ class JsonController extends Controller
 			$n = 0;
 			foreach($Boardmenu as $menu)
 			{
-				$response[$n]['type']['id'] = $menu->id_type;
-				$response[$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
-				$response[$n]['title'] = $menu->title;
-				$response[$n]['price'] = $menu->price;
+				$response['menu'][$n]['type']['id'] = $menu->id_type;
+				$response['menu'][$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
+				$response['menu'][$n]['title'] = $menu->title;
+				$response['menu'][$n]['price'] = $menu->price;
 				
 				if( count($menu->composition) > 0 )
 				{
@@ -398,11 +398,13 @@ class JsonController extends Controller
 								//$response[$n]['composition'][$z]['parameter'] = SiteHelper::getParameter($composition->parameter);
 								
 						}
-						$response[$n]['composition'] = $string_composition;
+						$response['menu'][$n]['composition'] = $string_composition;
 				}
 				
 				$n++;
 			}
+				
+				$response['category'] = SiteHelper::getCategoryBoardmenu();
 			
 			
 				
