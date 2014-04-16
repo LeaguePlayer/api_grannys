@@ -357,9 +357,9 @@ class JsonController extends Controller
 	
 	
 	
-	public function actionGetMenu($debug = false)
+	public function actionGetMenu($id_category = 0, $debug = false)
 	{
-		 $Boardmenu = Boardmenu::model()->findAll("status = :status",array(':status'=>Boardmenu::STATUS_PUBLISH));
+		 $Boardmenu = Boardmenu::model()->findAll("status = :status and id_type = :id_cat",array(':status'=>Boardmenu::STATUS_PUBLISH, ':id_cat'=>$id_category));
 		
 		
 		if(!$debug)
@@ -393,9 +393,7 @@ class JsonController extends Controller
 							
 							if(count($menu->composition)!=$z)
 								$string_composition .= ", ";
-								//$response[$n]['composition'][$z]['title'] = $composition->title;
-								//$response[$n]['composition'][$z]['composition'] = $composition->composition;
-								//$response[$n]['composition'][$z]['parameter'] = SiteHelper::getParameter($composition->parameter);
+								
 								
 						}
 						$response['menu'][$n]['composition'] = $string_composition;
