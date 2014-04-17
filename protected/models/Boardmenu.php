@@ -25,10 +25,10 @@ class Boardmenu extends EActiveRecord
     {
         return array(
 			array('id_type, title', 'required'),
-            array('id_type, status, sort', 'numerical', 'integerOnly'=>true),
-            array('title', 'length', 'max'=>255),
+            array('id_type, status, sort, bulk, bulk_parameter', 'numerical', 'integerOnly'=>true),
+            array('title, img_preview', 'length', 'max'=>255),
             array('price', 'length', 'max'=>10),
-            array('create_time, update_time', 'safe'),
+            array('create_time, update_time, short_desc', 'safe'),
             // The following rule is used by search().
             array('id, id_type, title, price, status, sort, create_time, update_time', 'safe', 'on'=>'search'),
         );
@@ -54,6 +54,11 @@ class Boardmenu extends EActiveRecord
             'sort' => 'Вес для сортировки',
             'create_time' => 'Дата создания',
             'update_time' => 'Дата последнего редактирования',
+			
+			'img_preview' => 'Фото',
+            'bulk' => 'Объем',
+            'bulk_parameter' => 'Измеряется в',
+            'short_desc' => 'Интересный факт',
         );
     }
 
@@ -61,6 +66,18 @@ class Boardmenu extends EActiveRecord
     public function behaviors()
     {
         return CMap::mergeArray(parent::behaviors(), array(
+			'imgBehaviorPreview' => array(
+				'class' => 'application.behaviors.UploadableImageBehavior',
+				'attributeName' => 'img_preview',
+				'versions' => array(
+					'medium' => array(
+						'centeredpreview' => array(800, 800),
+					),
+					'small' => array(
+						'resize' => array(0, 52),
+					)
+				),
+			),
 			'CTimestampBehavior' => array(
 				'class' => 'zii.behaviors.CTimestampBehavior',
                 'createAttribute' => 'create_time',

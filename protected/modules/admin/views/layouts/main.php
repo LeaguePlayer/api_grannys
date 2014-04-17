@@ -10,8 +10,10 @@
         <?php
             $menuItems = array(
                 array('label'=>'Разделы приложения', 'url'=>array('/admin/structure')),
-                array('label'=>'Управление галереей', 'url'=>array('/admin/partybusgalleryitem')),
+                array('label'=>'Фото галерея', 'url'=>array('/admin/partybusgalleryitem')),
                 array('label'=>'Точки продаж IceMan', 'url'=>array('/admin/icemanPlaces')),
+				array('label'=>'Управление меню Grannys Bar', 'url'=>array('/admin/boardMenu')),
+				
                 array('label'=>'Настройки', 'url'=>array('/admin/config')),
             );
         ?>

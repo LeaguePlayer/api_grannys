@@ -1,3 +1,10 @@
+	<div class='control-group'>
+		<?php echo CHtml::activeLabelEx($model, 'img_preview'); ?>
+		<?php echo $model->getImage('medium'); ?><br>
+		<?php echo $form->fileField($model,'img_preview', array('class'=>'span8')); ?>
+		<?php echo $form->error($model, 'img_preview'); ?>
+	</div>
+	
 	<?php echo $form->dropDownListControlGroup($model,'id_type',SiteHelper::getCategoryBoardmenu(), array('class'=>'span12')); ?>
 
 	<?php echo $form->textFieldControlGroup($model,'title',array('class'=>'span12','maxlength'=>255)); ?>
@@ -19,6 +26,13 @@
         </div>
         <?php echo TbHtml::button('Добавить ингредиент', array('class'=>'add_row')); ?>
      </div>
+     
+     
+     <?php echo $form->textFieldControlGroup($model,'bulk',array('class'=>'span12','maxlength'=>255)); ?>
+     
+     <?php echo $form->dropDownListControlGroup($model,'bulk_parameter', SiteHelper::getParameter() ,array('class'=>'span12')); ?>
+     
+     <?php echo $form->textAreaControlGroup($model,'short_desc',array('class'=>'span12','maxlength'=>255)); ?>
      
 
 	<?php echo $form->dropDownListControlGroup($model, 'status', Boardmenu::getStatusAliases(), array('class'=>'span12', 'displaySize'=>1)); ?>

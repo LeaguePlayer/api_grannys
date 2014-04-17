@@ -21,7 +21,7 @@ class BoardmenuComposition extends EActiveRecord
     public function rules()
     {
         return array(
-            array('id_boardmenu, title, composition, parameter', 'required'),
+            array('id_boardmenu, title, parameter', 'required'),
             array('id_boardmenu', 'numerical', 'integerOnly'=>true),
             array('composition', 'numerical'),
             array('title', 'length', 'max'=>255),

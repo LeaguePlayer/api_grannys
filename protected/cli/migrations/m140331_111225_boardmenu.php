@@ -16,7 +16,12 @@ class m140331_111225_boardmenu extends CDbMigration
  
         $this->createTable('{{boardmenu}}', array(
             'id' => 'pk', // auto increment
-
+			
+			'bulk'=> "integer COMMENT 'Объем'",
+			'bulk_parameter'=> "tinyint COMMENT 'Измеряется в'",
+			'short_desc'=> "text COMMENT 'Интересный факт'",
+			
+			'img_preview'=>  "string COMMENT 'Фото'",
 			'id_type' => "integer COMMENT 'Категория товара'",
 			'title' => "string COMMENT 'Название продукта'",
 			'price' => "decimal(10,2) COMMENT 'Стоимость продукта'",
