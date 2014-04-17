@@ -359,6 +359,7 @@ class JsonController extends Controller
 	
 	public function actionGetMenu($id_category = 0, $debug = false)
 	{
+		$domain = $this->domain_app;
 		 $Boardmenu = Boardmenu::model()->findAll("status = :status and id_type = :id_cat",array(':status'=>Boardmenu::STATUS_PUBLISH, ':id_cat'=>$id_category));
 		
 		
@@ -380,7 +381,7 @@ class JsonController extends Controller
 				$response['menu'][$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
 				$response['menu'][$n]['title'] = $menu->title;
 				$response['menu'][$n]['price'] = $menu->price;
-				
+				$response['image'][$n] = "{$domain}{$menu->getImageUrl('medium')}";
 				if( count($menu->composition) > 0 )
 				{
 					$z = 0;
@@ -403,7 +404,7 @@ class JsonController extends Controller
 			}
 				
 				$response['category'] = SiteHelper::getCategoryBoardmenu();
-			
+				
 			
 				
 				
