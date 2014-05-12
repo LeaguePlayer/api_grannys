@@ -380,6 +380,7 @@ class JsonController extends Controller
 				$response['menu'][$n]['type']['id'] = $menu->id_type;
 				$response['menu'][$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
 				$response['menu'][$n]['title'] = $menu->title;
+				$response['menu'][$n]['category'] = $menu->id_type;
 				$response['menu'][$n]['price'] = $menu->price;
 				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
 				$response['image'][$n]['title'] = "{$menu->title}, {$menu->price} руб.";
