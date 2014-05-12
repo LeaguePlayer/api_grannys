@@ -4,7 +4,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Управление барный инвентарем</h1>
+<h1>Управление барным инвентарем</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'barshop-grid',

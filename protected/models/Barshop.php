@@ -69,6 +69,9 @@ class Barshop extends EActiveRecord
 					),
 					'small' => array(
 						'resize' => array(200, 180),
+					),
+					'medium' => array(
+						'resize' => array(87, 87),
 					)
 				),
 			),
