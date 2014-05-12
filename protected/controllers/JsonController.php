@@ -432,4 +432,61 @@ class JsonController extends Controller
     	 	echo CJSON::encode($json);	
 	}
 	
+	
+	
+	public function actionGetBarshop($debug = false)
+	{
+		$domain = $this->domain_app;
+		 $barshop = Barshop::model()->findAll("status = :status",array(':status'=>Boardmenu::STATUS_PUBLISH));
+		
+		
+		if(!$debug)
+			header('Content-type: application/json');
+		$json = array();
+		
+		
+		
+		
+		if( count($barshop) > 0 )
+		{ 
+			$result = 1;
+			
+			$n = 0;
+			foreach($barshop as $menu)
+			{
+				
+				$response['menu'][$n]['title'] = $menu->title;
+				
+				$response['menu'][$n]['price'] = ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
+				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
+				$response['image'][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				
+				
+				$n++;
+			}
+				
+				
+				
+		}
+		else
+		{
+			$result = 0;
+			$error = "Нет записей по меню";
+		}
+		
+		$json['result'] = $result;
+		$json['error'] = $error;
+		$json['response'] = $response;
+		
+		
+    	 if($debug)
+		{
+			echo "<pre>";
+				print_r($json);
+			echo "</pre>";
+		}
+		else
+    	 	echo CJSON::encode($json);	
+	}
+	
 }
