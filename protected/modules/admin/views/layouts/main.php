@@ -9,14 +9,19 @@
 
         <?php
             $menuItems = array(
-                array('label'=>'Разделы приложения', 'url'=>array('/admin/structure')),
-                array('label'=>'Фото галерея', 'url'=>array('/admin/partybusgalleryitem')),
-                array('label'=>'Точки продаж IceMan', 'url'=>array('/admin/icemanPlaces')),
+                array('label'=>'Текстовое наполнение', 'url'=>array('/admin/structure')),
+                
+                array('label'=>'Медиа', 'url'=>'#', 'items'=>array( 
+								array('label'=>'Фотогалереи', 'url'=>array('/admin/partybusgalleryitem')),
+								array('label'=>'Видеогалереи', 'url'=>array('/admin/videos')),
+				 )),
 			//	array('label'=>'Управление меню Grannys Bar', 'url'=>array('/admin/boardmenu')),
 				array('label'=>'Управление', 'url'=>'#', 'items'=>array( 
 								array('label'=>'Меню Grannys Bar', 'url'=>array('/admin/boardmenu')),
 								array('label'=>'Меню Барный инвентарь', 'url'=>array('/admin/barshop')),
+								array('label'=>'Точки продаж IceMan', 'url'=>array('/admin/icemanPlaces')),
 				 )),
+				 array('label'=>'Заявки', 'url'=>array('/admin/orders')),
                 array('label'=>'Настройки', 'url'=>array('/admin/config')),
             );
         ?>

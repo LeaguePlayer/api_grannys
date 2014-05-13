@@ -29,8 +29,9 @@ class SiteController extends FrontController
 	 */
 	public function actionIndex()
 	{
-        $this->title = Yii::app()->config->get('app.name');
-		$this->render('index');
+		$this->redirect('/admin');
+       // $this->title = Yii::app()->config->get('app.name');
+		//	$this->render('index');
 	}
 
 	/**
