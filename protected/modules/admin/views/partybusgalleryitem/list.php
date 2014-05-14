@@ -1,10 +1,4 @@
-<?php
-$this->menu=array(
-	array('label'=>'Добавить','url'=>array('create')),
-);
-?>
-
-<h1>Управление <?php echo $model->translition(); ?></h1>
+<h1>Управление фотогалереями</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'partybusgalleryitem-grid',
@@ -17,20 +11,22 @@ $this->menu=array(
         "class"=>"status_".(isset($data->status) ? $data->status : ""),
     )',
 	'columns'=>array(
-		'name',
-		'gllr_gallery_id',
+		array(
+			'name'=>'name',
+			'type'=>'raw',
+			'value'=>'CHtml::link($data->name, array("/admin/partybusgalleryitem/update/id/{$data->id}"))',
+			
+		),
+		
+		
 		array(
 			'name'=>'status',
 			'type'=>'raw',
 			'value'=>'Partybusgalleryitem::getStatusAliases($data->status)',
 			'filter'=>Partybusgalleryitem::getStatusAliases()
 		),
-		'sort',
-		array(
-			'name'=>'create_time',
-			'type'=>'raw',
-			'value'=>'$data->create_time ? SiteHelper::russianDate($data->create_time).\' в \'.date(\'H:i\', strtotime($data->create_time)) : ""'
-		),
+		
+		
 		array(
 			'name'=>'update_time',
 			'type'=>'raw',
@@ -38,6 +34,7 @@ $this->menu=array(
 		),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>"{update}",
 		),
 	),
 )); ?>
