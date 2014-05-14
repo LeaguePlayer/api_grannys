@@ -1,34 +1,35 @@
 <?php
 
 /**
-* This is the model class for table "{{iceman_places}}".
+* This is the model class for table "{{videos}}".
 *
-* The followings are the available columns in table '{{iceman_places}}':
+* The followings are the available columns in table '{{videos}}':
     * @property integer $id
-    * @property string $name
-    * @property string $street
+    * @property string $id_type
+    * @property string $title
+    * @property string $video_string
     * @property integer $status
     * @property integer $sort
     * @property string $create_time
     * @property string $update_time
 */
-class IcemanPlaces extends EActiveRecord
+class Videos extends EActiveRecord
 {
     public function tableName()
     {
-        return '{{iceman_places}}';
+        return '{{videos}}';
     }
 
 
     public function rules()
     {
         return array(
-			array('name, street', 'required'),
+			array('video_string', 'required'),
             array('status, sort', 'numerical', 'integerOnly'=>true),
-            array('name, street', 'length', 'max'=>255),
-            array('create_time, update_time', 'safe'),
+            array('id_type, title', 'length', 'max'=>255),
+            array('video_string, create_time, update_time', 'safe'),
             // The following rule is used by search().
-            array('id, name, street, status, sort, create_time, update_time', 'safe', 'on'=>'search'),
+            array('id, id_type, title, video_string, status, sort, create_time, update_time', 'safe', 'on'=>'search'),
         );
     }
 
@@ -44,8 +45,9 @@ class IcemanPlaces extends EActiveRecord
     {
         return array(
             'id' => 'ID',
-            'name' => 'Название точки продаж',
-            'street' => 'Адрес',
+            'id_type' => 'Относится к',
+            'title' => 'Заголовок',
+            'video_string' => 'Ссылка на видео YouTube',
             'status' => 'Статус',
             'sort' => 'Вес для сортировки',
             'create_time' => 'Дата создания',
@@ -70,8 +72,9 @@ class IcemanPlaces extends EActiveRecord
     {
         $criteria=new CDbCriteria;
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('street',$this->street,true);
+		$criteria->compare('id_type',$this->id_type,true);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('video_string',$this->video_string,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('sort',$this->sort);
 		$criteria->compare('create_time',$this->create_time,true);
@@ -86,6 +89,18 @@ class IcemanPlaces extends EActiveRecord
     {
         return parent::model($className);
     }
+	
+	
+	
+	public static function relationTo($n=false)
+	{
+		$array = array('Grannys Bar', 'BarService', 'PartyBus');
+		
+		if( is_numeric ($n) )
+			return $array[$n];
+		else
+			return $array;
+	}
 
 
 }

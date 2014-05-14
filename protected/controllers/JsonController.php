@@ -165,7 +165,68 @@ class JsonController extends Controller
 		else
     	 	echo CJSON::encode($json);	
 	}
-	
+
+
+	public function actionGetVideos($site = "grannys", $debug = false)
+	{
+		switch($site)
+		{
+			case 'grannys':
+				$id_type = 0;
+			break;
+			case 'barservice':
+         		$id_type = 1;
+			break;
+			case 'partybus':
+				$id_type = 2;
+			break;
+		}
+		
+		
+		if(!$debug)
+			header('Content-type: application/json');
+		$json = array();
+		
+		$videos = Videos::model()->findAll( array( 'order'=>'sort ASC', 'condition'=>"id_type = {$id_type} and status = :status", 'params'=>array(':status'=>Videos::STATUS_PUBLISH) ) );
+		
+		
+		if( count($videos) > 0 )
+		{ 
+			$result = 1;
+			
+			$n=0;
+			foreach($videos as $video)
+			{
+				$response[$n]['title'] = $video->title;
+				$response[$n]['video'] = $video->video_string;
+				
+				$n++;
+			}
+			
+			
+				
+				
+		}
+		else
+		{
+			$result = 0;
+			$error = "Нет видео";
+		}
+		
+		$json['result'] = $result;
+		$json['error'] = $error;
+		$json['response'] = $response;
+		
+		
+    	 if($debug)
+		{
+			echo "<pre>";
+				print_r($json);
+			echo "</pre>";
+		}
+		else
+    	 	echo CJSON::encode($json);	
+	}	
 	
 	
 	// BarService Table

@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	"Меню Grannys Bar"=>array('list'),
+	"Видеогалерея"=>array('list'),
 	'Создание',
 );
 
@@ -9,6 +9,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Добавление позиции</h1>
+<h1>Добавление видео</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -4,7 +4,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Управление <?php echo $model->translition(); ?></h1>
+<h1>Управление точками продаж IceMan</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'iceman-places-grid',
@@ -17,7 +17,13 @@ $this->menu=array(
         "class"=>"status_".(isset($data->status) ? $data->status : ""),
     )',
 	'columns'=>array(
-		'name',
+		array(
+				'name'=>'name',
+				'type'=>'raw',
+				'value'=>'CHtml::link($data->name, array("/admin/icemanPlaces/update/id/{$data->id}"))',
+			
+		),
+		
 		'street',
 		array(
 			'name'=>'status',
@@ -25,7 +31,7 @@ $this->menu=array(
 			'value'=>'IcemanPlaces::getStatusAliases($data->status)',
 			'filter'=>IcemanPlaces::getStatusAliases()
 		),
-		'sort',
+		
 		array(
 			'name'=>'create_time',
 			'type'=>'raw',
@@ -38,6 +44,7 @@ $this->menu=array(
 		),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>"{update} {delete}",
 		),
 	),
 )); ?>

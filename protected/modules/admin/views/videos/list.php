@@ -4,14 +4,14 @@ $this->menu=array(
 );
 ?>
 
-<h1>Меню Grannys Bar</h1>
+<h1>Управление видео</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'boardmenu-grid',
+	'id'=>'videos-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'type'=>TbHtml::GRID_TYPE_HOVER,
-    'afterAjaxUpdate'=>"function() {sortGrid('boardmenu')}",
+    'afterAjaxUpdate'=>"function() {sortGrid('videos')}",
     'rowHtmlOptionsExpression'=>'array(
         "id"=>"items[]_".$data->id,
         "class"=>"status_".(isset($data->status) ? $data->status : ""),
@@ -20,23 +20,25 @@ $this->menu=array(
 		array(
 			'name'=>'id_type',
 			'type'=>'raw',
-			'value'=>'SiteHelper::getCategoryBoardmenu($data->id_type)',
-			'filter'=>SiteHelper::getCategoryBoardmenu()
+			'value'=>'Videos::relationTo($data->id_type)',
+			'filter'=>Videos::relationTo()
 		),
+		
+		
 		array(
 			'name'=>'title',
 			'type'=>'raw',
-			'value'=>'CHtml::link($data->title, array("/admin/boardmenu/update/id/{$data->id}"))',
+			'value'=>'CHtml::link($data->title, array("/admin/videos/update/id/{$data->id}"))',
 			
 		),
 		
-		'price',
 		array(
 			'name'=>'status',
 			'type'=>'raw',
-			'value'=>'Boardmenu::getStatusAliases($data->status)',
-			'filter'=>Boardmenu::getStatusAliases()
+			'value'=>'Videos::getStatusAliases($data->status)',
+			'filter'=>Videos::getStatusAliases()
 		),
+		
 		
 		array(
 			'name'=>'create_time',
@@ -55,4 +57,4 @@ $this->menu=array(
 	),
 )); ?>
 
-<?php if($model->hasAttribute('sort')) Yii::app()->clientScript->registerScript('sortGrid', 'sortGrid("boardmenu");', CClientScript::POS_END) ;?>
+<?php if($model->hasAttribute('sort')) Yii::app()->clientScript->registerScript('sortGrid', 'sortGrid("videos");', CClientScript::POS_END) ;?>
