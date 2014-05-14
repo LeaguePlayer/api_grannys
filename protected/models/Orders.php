@@ -76,6 +76,9 @@ class Orders extends EActiveRecord
 		$criteria->compare('update_time',$this->update_time,true);
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'id DESC',
+			),
         ));
     }
 
@@ -83,6 +86,25 @@ class Orders extends EActiveRecord
     {
         return parent::model($className);
     }
+	
+	
+	public $array_with_values_of_param = array(
+													"hours"=>"Количество часов",
+													"reason"=>"Повод заказа",
+													"category"=>"Категория вечеринки",
+													"comment"=>"Комментарий к заказу",
+													"mans"=>"Количество человек",
+												
+											);
 
+	public function convertParams()
+	{
+		$result = array();
+		foreach(unserialize($this->params) as $key => $value)
+			$result[$this->array_with_values_of_param[$key]] = $value;
+		
+		return $result;
+	
+	}
 
 }

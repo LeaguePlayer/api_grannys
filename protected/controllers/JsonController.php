@@ -6,8 +6,13 @@ class JsonController extends Controller
 	protected $domain_barservice = "http://bar-tm.ru";
 	protected $domain_app = "http://grannys.amobile-studio.ru";
 	
+	
+	public $order_views = array( 77=>"Online заказ выездного бара", 69=>"Магазин - уточнить по наличию" );
+	
+	
 	public function actionGetGallery($site="grannys", $debug = false)
 	{
+		
 		switch($site)
 		{
 			case 'grannys':
@@ -47,37 +52,22 @@ class JsonController extends Controller
 			$n=0;
 			foreach ($images as $image)
 			{
-				switch($site)
-				{
-					case 'grannys':
+				
                   //	$path_thumb = "{$domain}/files/gallery/{$image->page}/thumb/{$image->filename}";
                   //	$path_big = "{$domain}/files/gallery/{$image->page}/img/{$image->filename}";
                   
                   $path_thumb = "{$domain}{$image->getUrl('small')}";
-						$path_big = "{$domain}{$image->getUrl('medium')}";
-					break;
+						$ipad = "{$domain}{$image->getUrl('ipad')}";
+						$ipad_retina = "{$domain}{$image->getUrl('ipad_retina')}";
+						
+						$iphone = "{$domain}{$image->getUrl('iphone')}";
+						$iphone_retina = "{$domain}{$image->getUrl('iphone_retina')}";
 					
-					case 'barservice':
-					
-                  //	$page_barservice = BarservicePages::model()->findByPk($image->page);
-                  //	$path_thumb = "{$domain}/files/gallery/{$page_barservice->path}/thumb/{$image->filename}";
-                  //	$path_big = "{$domain}/files/gallery/{$page_barservice->path}/img/{$image->filename}";
-                  
-                  		$path_thumb = "{$domain}{$image->getUrl('small')}";
-						$path_big = "{$domain}{$image->getUrl('medium')}";
-						
-						
-					break;
-					
-					case 'partybus':
-						$path_thumb = "{$domain}{$image->getUrl('small')}";
-						$path_big = "{$domain}{$image->getUrl('medium')}";
-						
-						
-					break;
-				}
 								
-				$response[$n]['big'] = $path_big;
+				$response[$n]['ipad'] = $ipad;
+				$response[$n]['ipad_retina'] = $ipad_retina;
+				$response[$n]['iphone'] = $iphone;
+				$response[$n]['iphone_retina'] = $iphone_retina;
 				$response[$n]['thumb'] = $path_thumb;
 					
 				if($debug)
@@ -251,15 +241,15 @@ class JsonController extends Controller
 			break;	
 			case 'about':
 				$id_page = 33;
-				$p_title = "О Выездном баре";
+				$p_title = "О Bar Service";
 			break;
 			
 			case is_numeric($page):
 				$id_page = $page;
 				$show_page = true;
 				
-				if( in_array($id_page, array( 77 )) )
-					$type_page = "order";
+				if( in_array($id_page, array_keys($this->order_views) ) )
+					$type_page = $this->order_views[$id_page];
 				else
 					$type_page = "view";
 				
@@ -291,6 +281,7 @@ class JsonController extends Controller
 			   {
 				   $childs[0]['title'] = $p_title; 
 				   $childs[0]['id_page'] = $id_page; 
+				   
 			   }
 			   
 			   	
@@ -299,7 +290,8 @@ class JsonController extends Controller
 				{
 					$childs[$n]['title'] = $p_child->rusname;
 					$childs[$n]['id_page'] = $p_child->id;
-					
+					$childs[$n]['type'] = (in_array($p_child->id, array_keys($this->order_views))) ? "order_view" : "";
+					$childs[$n]['service_name'] = $this->order_views[$p_child->id];
 					$n++;
 				}
 			   
@@ -438,13 +430,17 @@ class JsonController extends Controller
 			$n = 0;
 			foreach($Boardmenu as $menu)
 			{
+				$bulk_parameter = SiteHelper::getParameter($menu->bulk_parameter);
+				
 				$response['menu'][$n]['type']['id'] = $menu->id_type;
 				$response['menu'][$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
+				//$response['menu'][$n]['title'] = $menu->title;
 				$response['menu'][$n]['title'] = $menu->title;
+				$response['menu'][$n]['title'] .= ($menu->bulk>0) ? ", {$menu->bulk} {$bulk_parameter}" : "";
 				$response['menu'][$n]['category'] = $menu->id_type;
 				$response['menu'][$n]['price'] = $menu->price;
 				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
-				$response['image'][$n]['title'] = "{$menu->title}, {$menu->price} руб.";
+				$response['image'][$n]['title'] = "{$response['menu'][$n]['title']}, {$menu->price} руб.";
 				if( count($menu->composition) > 0 )
 				{
 					$z = 0;
@@ -453,7 +449,9 @@ class JsonController extends Controller
 						{
 							$z++;
 							$param = SiteHelper::getParameter($composition->parameter);
-							$string_composition .= "{$composition->composition} {$param} {$composition->title}";
+							
+							$string_composition .= ($composition->composition>0) ? "{$composition->composition} {$param}" : "";
+							$string_composition .= "{$composition->title}";
 							
 							if(count($menu->composition)!=$z)
 								$string_composition .= ", ";

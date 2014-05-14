@@ -1,10 +1,6 @@
-<?php
-$this->menu=array(
-	array('label'=>'Добавить','url'=>array('create')),
-);
-?>
 
-<h1>Управление <?php echo $model->translition(); ?></h1>
+
+<h1>Управление заявками</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'orders-grid',
@@ -17,7 +13,18 @@ $this->menu=array(
         "class"=>"status_".(isset($data->status) ? $data->status : ""),
     )',
 	'columns'=>array(
-		'type_order',
+	array(
+			'header'=>'№ заявки',
+			'type'=>'raw',
+			'value'=>'$data->id',
+		),
+		
+	array(
+			'name'=>'type_order',
+			'type'=>'raw',
+			'value'=>'CHtml::link($data->type_order, array("/admin/orders/update/id/{$data->id}"))',
+		),
+		
 		'name',
 		'phone',
 		array(
@@ -25,13 +32,10 @@ $this->menu=array(
 			'type'=>'raw',
 			'value'=>'$data->create_time ? SiteHelper::russianDate($data->create_time).\' в \'.date(\'H:i\', strtotime($data->create_time)) : ""'
 		),
-		array(
-			'name'=>'update_time',
-			'type'=>'raw',
-			'value'=>'$data->update_time ? SiteHelper::russianDate($data->update_time).\' в \'.date(\'H:i\', strtotime($data->update_time)) : ""'
-		),
+		
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>"{update} {delete}",
 		),
 	),
 )); ?>
