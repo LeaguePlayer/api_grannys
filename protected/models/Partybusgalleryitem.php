@@ -61,11 +61,20 @@ class Partybusgalleryitem extends EActiveRecord
 				'idAttribute' => 'gllr_gallery_id',
 				'versions' => array(
 					'small' => array(
-						'adaptiveResize' => array(137, 137),
+						'adaptiveResize' => array(137, 137), 
 					),
-					'medium' => array(
-						'adaptiveResize' => array(2000, 2000),
-					)
+					'iphone' => array(
+						'adaptiveResize' => array(320, 480),
+					),
+					'iphone_retina' => array(
+						'adaptiveResize' => array(640, 960),
+					),
+					'ipad' => array(
+						'adaptiveResize' => array(768, 1024),
+					),
+					'ipad_retina' => array(
+						'adaptiveResize' => array(1536, 2048),
+					),
 				),
 				'name' => true,
 				'description' => true,
