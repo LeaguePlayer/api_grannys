@@ -47,4 +47,19 @@ class SiteController extends FrontController
 				$this->render('error', $error);
 		}
 	}
+	
+	  public function actionAddDeviceToken($deviceToken,$device)
+    {
+       
+            $find_device = Devicetokens::model()->count("device = :device and deviceToken = :deviceToken",array(':deviceToken'=>$deviceToken,':device'=>$device));
+            if($find_device==0)
+            {
+                $new_device = new Devicetokens;
+                $new_device->device = $device;
+                $new_device->deviceToken = $deviceToken;
+                $new_device->save();
+            }
+            
+        
+    }
 }
