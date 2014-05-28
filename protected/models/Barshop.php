@@ -116,6 +116,8 @@ class Barshop extends EActiveRecord
 		{
 			foreach($array as $key => $value)
 			{
+				
+				
 					if(is_array($value))
 					{
 						if(in_array($n, array_keys($value)))
@@ -124,7 +126,10 @@ class Barshop extends EActiveRecord
 							break;
 						}
 					}
-					else return $value;
+					elseif($key == $n)
+					{
+						return $value;	
+					}
 			}
 		}
 		else
