@@ -558,6 +558,7 @@ class JsonController extends Controller
 			
 			$n = 0;
 			$tmp = 0;
+			$section = -1;
 			$ex_section;
 			foreach($barshop as $menu)
 			{
@@ -565,19 +566,20 @@ class JsonController extends Controller
 				{
 					$n = 0;
 						$ex_section=$menu->id_category;
+					$section++;
 				}
-				$response['menu'][$menu->id_category][$n]['title'] = $menu->title;
-				$response['menu'][$menu->id_category][$n]['preview'] = "{$domain}{$menu->getImageUrl()}";
+				$response['menu'][$section][$n]['title'] = $menu->title;
+				$response['menu'][$section][$n]['preview'] = "{$domain}{$menu->getImageUrl()}";
 				
 				if( $menu->price )
 				{
-					$response['menu'][$menu->id_category][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
+					$response['menu'][$section][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
 				}
 				else
-					$response['menu'][$menu->id_category][$n]['price'] =  "по запросу";
+					$response['menu'][$section][$n]['price'] =  "по запросу";
 				//$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
-				$response['image'][$menu->id_category][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
-				$response['image'][$menu->id_category][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				$response['image'][$section][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
+				$response['image'][$section][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
 				
 				$tmp++;
 				$n++;
