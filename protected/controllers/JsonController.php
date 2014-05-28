@@ -285,28 +285,33 @@ class JsonController extends Controller
 			   }
 			   
 			   $n = 1;
-			   	foreach ( Barshop::getCategory() as  $name_category => $category )
-				{
-					if(is_array($category))
+			   
+			   if($page=='shop')
+			   {
+				   foreach ( Barshop::getCategory() as  $name_category => $category )
 					{
-						$keys = array_keys($category);
-						$id_category = array_shift($keys);	
-					}
-					else 
-					{
-						$id_category = $name_category;
-						$name_category = $category;
+						if(is_array($category))
+						{
+							$keys = array_keys($category);
+							$id_category = array_shift($keys);	
+						}
+						else 
+						{
+							$id_category = $name_category;
+							$name_category = $category;
+							
+						}
 						
+						
+						
+						
+							$childs[$n]['title'] = $name_category;
+							$childs[$n]['id'] = $id_category;
+							$childs[$n]['type'] = "inventory";
+						$n++;
 					}
-					
-					
-					
-					
-						$childs[$n]['title'] = $name_category;
-						$childs[$n]['id'] = $id_category;
-						$childs[$n]['type'] = "inventory";
-					$n++;
-				}
+			   }
+			   	
 			   	
 				
 				foreach ($child_pages as $p_child)
@@ -565,14 +570,14 @@ class JsonController extends Controller
 				else
 					$response['menu'][$menu->id_category][$n]['price'] =  "по запросу";
 				//$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
-				$response['image'][$menu->id_category][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
-				$response['image'][$menu->id_category][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
+				$response['image'][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
 				
 				
 				$n++;
 			}
 				
-				
+				$response['rows'] = $n;
 				
 		}
 		else
