@@ -120,7 +120,7 @@ class Barshop extends EActiveRecord
 					{
 						if(in_array($n, array_keys($value)))
 						{
-							return $key;
+							return $value[$n];
 							break;
 						}
 					}
