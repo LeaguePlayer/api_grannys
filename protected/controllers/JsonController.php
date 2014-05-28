@@ -273,7 +273,7 @@ class JsonController extends Controller
 		{ 
 			$result = 1;
 			
-			   $child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id not in (93, 31, 32, 34)", 'params' => array( ':id_page'=>$id_page ) ) );
+			   $child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id not in (93, 31, 32, 34, 43, 44, 101, 45, 71, 72, 42)", 'params' => array( ':id_page'=>$id_page ) ) );
 			   
 			  // $childs = CHtml::listData($child_pages,'id','rusname');
 			   
@@ -284,8 +284,31 @@ class JsonController extends Controller
 				   
 			   }
 			   
+			   $n = 1;
+			   	foreach ( Barshop::getCategory() as  $name_category => $category )
+				{
+					if(is_array($category))
+					{
+						$keys = array_keys($category);
+						$id_category = array_shift($keys);	
+					}
+					else 
+					{
+						$id_category = $name_category;
+						$name_category = $category;
+						
+					}
+					
+					
+					
+					
+						$childs[$n]['title'] = $name_category;
+						$childs[$n]['id'] = $id_category;
+						$childs[$n]['type'] = "inventory";
+					$n++;
+				}
 			   	
-				$n = 1;
+				
 				foreach ($child_pages as $p_child)
 				{
 					$childs[$n]['title'] = $p_child->rusname;
@@ -493,10 +516,28 @@ class JsonController extends Controller
 	
 	
 	
-	public function actionGetBarshop($debug = false)
+	public function actionGetBarshop($id_category = 0, $debug = false)
 	{
 		$domain = $this->domain_app;
-		 $barshop = Barshop::model()->findAll("status = :status",array(':status'=>Boardmenu::STATUS_PUBLISH));
+		
+		$ids_categories = $id_category;
+		
+		foreach ( Barshop::getCategory() as $category )
+		{
+			if(is_array($category))
+			{
+				if(in_array($id_category, array_keys($category)))
+				{
+					$ids_categories = implode(", ",array_keys($category));
+					break;
+				}
+			}
+			
+		}
+		
+		
+	
+		 $barshop = Barshop::model()->findAll("status = :status and id_category in ({$ids_categories})",array(':status'=>Boardmenu::STATUS_PUBLISH));
 		
 		
 		if(!$debug)
@@ -514,18 +555,18 @@ class JsonController extends Controller
 			foreach($barshop as $menu)
 			{
 				
-				$response['menu'][$n]['title'] = $menu->title;
-				$response['menu'][$n]['preview'] = "{$domain}{$menu->getImageUrl()}";
+				$response['menu'][$menu->id_category][$n]['title'] = $menu->title;
+				$response['menu'][$menu->id_category][$n]['preview'] = "{$domain}{$menu->getImageUrl()}";
 				
 				if( $menu->price )
 				{
-					$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
+					$response['menu'][$menu->id_category][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
 				}
 				else
-					$response['menu'][$n]['price'] =  "по запросу";
+					$response['menu'][$menu->id_category][$n]['price'] =  "по запросу";
 				//$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
-				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
-				$response['image'][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				$response['image'][$menu->id_category][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
+				$response['image'][$menu->id_category][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
 				
 				
 				$n++;
