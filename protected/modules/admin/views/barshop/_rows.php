@@ -1,3 +1,6 @@
+	<?php echo $form->dropDownListControlGroup($model, 'id_category', Barshop::getCategory(), array('class'=>'span8', 'displaySize'=>1)); ?>
+	
+	
 	<?php echo $form->textFieldControlGroup($model,'title',array('class'=>'span8','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldControlGroup($model,'price',array('class'=>'span8')); ?>

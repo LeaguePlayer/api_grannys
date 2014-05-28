@@ -25,7 +25,7 @@ class Barshop extends EActiveRecord
     public function rules()
     {
         return array(
-            array('price, fixed_price, status, sort', 'numerical', 'integerOnly'=>true),
+            array('price, fixed_price, status, id_category, sort', 'numerical', 'integerOnly'=>true),
             array('title, img_preview', 'length', 'max'=>255),
             array('create_time, update_time', 'safe'),
             // The following rule is used by search().
@@ -53,6 +53,7 @@ class Barshop extends EActiveRecord
             'sort' => 'Вес для сортировки',
             'create_time' => 'Дата создания',
             'update_time' => 'Дата последнего редактирования',
+			'id_category'=>'Категория товара',
         );
     }
 
@@ -106,6 +107,18 @@ class Barshop extends EActiveRecord
     {
         return parent::model($className);
     }
+	
+	public static function getCategory($n = false)
+	{
+		$array = array( 'Барный инвентарь'=>array(0=>'Барный инвентарь', 1=>'Инвентарь для бариста'), 2=>'Кофе, горячий шоколад', 'Сиропы'=>array(3=>'Барная вишня',4=>'Сиропы марки "Barline"', 5=>'Сиропы марки "MONIN", Франция'), 'Чай'=>array(6=>'Весовой чай торговой марки Tea Garten',7=>'Пакетированный чай торговой марки SVAY'),'Чай весовой'=>array(8=>'Черный чай', 9=>'Зеленый чай', 10=>'Фруктовый чай, ароматизированный', 11=>'Травяной чай, ароматизированный'), 12=>'Расходные материалы' );	
+		
+		if(is_numeric($n))
+			return $array[$n];
+		else
+			return $array;
+		
+		
+	}
 
 
 }
