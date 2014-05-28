@@ -286,7 +286,7 @@ class JsonController extends Controller
 			   
 			   $n = 1;
 			   
-			   if($page=='shop')
+			   if($id_page==26)
 			   {
 				   foreach ( Barshop::getCategory() as  $name_category => $category )
 					{
