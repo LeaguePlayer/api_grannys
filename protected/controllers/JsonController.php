@@ -542,7 +542,7 @@ class JsonController extends Controller
 		
 		
 	
-		 $barshop = Barshop::model()->findAll("status = :status and id_category in ({$ids_categories})",array(':status'=>Boardmenu::STATUS_PUBLISH));
+		 $barshop = Barshop::model()->findAll(array('order'=>'id_category ASC', 'condition'=>"status = :status and id_category in ({$ids_categories})",'params'=>array(':status'=>Boardmenu::STATUS_PUBLISH)));
 		
 		
 		if(!$debug)
@@ -557,9 +557,11 @@ class JsonController extends Controller
 			$result = 1;
 			
 			$n = 0;
+			$tmp = 0;
+			$ex_section;
 			foreach($barshop as $menu)
 			{
-				
+				if($ex_section!=$menu->id_category) $n = 0;
 				$response['menu'][$menu->id_category][$n]['title'] = $menu->title;
 				$response['menu'][$menu->id_category][$n]['preview'] = "{$domain}{$menu->getImageUrl()}";
 				
@@ -573,11 +575,11 @@ class JsonController extends Controller
 				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
 				$response['image'][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
 				
-				
+				$tmp++;
 				$n++;
 			}
 				
-				$response['rows'] = $n;
+				$response['rows'] = $tmp;
 				
 		}
 		else
