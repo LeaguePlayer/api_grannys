@@ -561,7 +561,11 @@ class JsonController extends Controller
 			$ex_section;
 			foreach($barshop as $menu)
 			{
-				if($ex_section!=$menu->id_category) $n = 0;
+				if($ex_section!=$menu->id_category) 
+				{
+					$n = 0;
+						$ex_section=$menu->id_category;
+				}
 				$response['menu'][$menu->id_category][$n]['title'] = $menu->title;
 				$response['menu'][$menu->id_category][$n]['preview'] = "{$domain}{$menu->getImageUrl()}";
 				
@@ -572,8 +576,8 @@ class JsonController extends Controller
 				else
 					$response['menu'][$menu->id_category][$n]['price'] =  "по запросу";
 				//$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
-				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
-				$response['image'][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				$response['image'][$menu->id_category][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
+				$response['image'][$menu->id_category][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
 				
 				$tmp++;
 				$n++;
