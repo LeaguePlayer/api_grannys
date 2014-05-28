@@ -578,8 +578,8 @@ class JsonController extends Controller
 				else
 					$response['menu'][$section][$n]['price'] =  "по запросу";
 				//$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
-				$response['image'][$section][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
-				$response['image'][$section][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('small')}";
+				$response['image'][$n]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
 				
 				$tmp++;
 				$n++;
