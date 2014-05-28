@@ -580,6 +580,7 @@ class JsonController extends Controller
 				//$response['menu'][$n]['price'] =  ($menu->fixed_price) ? "{$menu->price} руб." : "от {$menu->price} руб.";
 				$response['image'][$tmp]['url'] = "{$domain}{$menu->getImageUrl('small')}";
 				$response['image'][$tmp]['title'] = "{$menu->title}, {$response['menu'][$n]['price']}";
+				$response['section'][$section] = Barshop::getCategory($menu->id_category);
 				
 				$tmp++;
 				$n++;

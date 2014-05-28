@@ -113,7 +113,20 @@ class Barshop extends EActiveRecord
 		$array = array( 'Барный инвентарь'=>array(0=>'Барный инвентарь', 1=>'Инвентарь для бариста'), 2=>'Кофе, горячий шоколад', 'Сиропы'=>array(3=>'Барная вишня',4=>'Сиропы марки "Barline"', 5=>'Сиропы марки "MONIN", Франция'), 'Чай'=>array(6=>'Весовой чай торговой марки Tea Garten',7=>'Пакетированный чай торговой марки SVAY'),'Чай весовой'=>array(8=>'Черный чай', 9=>'Зеленый чай', 10=>'Фруктовый чай, ароматизированный', 11=>'Травяной чай, ароматизированный'), 12=>'Расходные материалы' );	
 		
 		if(is_numeric($n))
-			return $array[$n];
+		{
+			foreach($array as $key => $value)
+			{
+					if(is_array($value))
+					{
+						if(in_array($n, array_keys($value)))
+						{
+							return $key;
+							break;
+						}
+					}
+					else return $value;
+			}
+		}
 		else
 			return $array;
 		
