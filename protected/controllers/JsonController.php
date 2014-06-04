@@ -499,8 +499,8 @@ class JsonController extends Controller
 				$response['menu'][$section][$n]['title'] .= ($menu->bulk>0) ? ", {$menu->bulk} {$bulk_parameter}" : "";
 				$response['menu'][$section][$n]['category'] = $menu->id_type;
 				$response['menu'][$section][$n]['price'] = $menu->price;
-				$response['image'][$tmp][$n]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
-				$response['image'][$tmp][$n]['title'] = "{$response['menu'][$n]['title']}, {$menu->price} руб.";
+				$response['image'][$tmp]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
+				$response['image'][$tmp]['title'] = "{$response['menu'][$n]['title']}, {$menu->price} руб.";
 				if( count($menu->composition) > 0 )
 				{
 					$z = 0;
