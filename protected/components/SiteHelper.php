@@ -131,7 +131,7 @@ class SiteHelper {
 			return $array;
 	}
 	
-	public static function getCategoryBoardmenu($n = false)
+	public static function getCategoryBoardmenu($n = false, $first_level = false)
 	{
 		$array = array(
 						"Алкогольные напитки" => array (
@@ -173,7 +173,38 @@ class SiteHelper {
 					);
 		
 		if(is_numeric($n))
-			return $array[$n];
+		{	
+			foreach($array as $key => $value)
+			{
+				
+				
+					if(is_array($value))
+					{
+						if(in_array($n, array_keys($value)))
+						{
+							return $value[$n];
+							break;
+						}
+					}
+					elseif($key == $n)
+					{
+						return $value;	
+					}
+			}
+			
+		}
+		elseif($first_level)
+		{
+			$result = array();
+				foreach($array as $key => $value)
+				{
+					if(is_array($value)) $result[array_shift(array_keys($value))] = $key;
+					else 
+						$result[$key] = $value;
+				}
+			
+			return $result;
+		}
 		else
 			return $array;
 	}

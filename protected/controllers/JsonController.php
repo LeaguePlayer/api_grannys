@@ -438,10 +438,29 @@ class JsonController extends Controller
 	
 	
 	
-	public function actionGetMenu($id_category = 0, $debug = false)
+	public function actionGetMenu($id_category = 1, $debug = false)
 	{
 		$domain = $this->domain_app;
-		 $Boardmenu = Boardmenu::model()->findAll("status = :status and id_type = :id_cat",array(':status'=>Boardmenu::STATUS_PUBLISH, ':id_cat'=>$id_category));
+		
+		
+		$ids_categories = $id_category;
+		
+		foreach ( SiteHelper::getCategoryBoardmenu() as $category )
+		{
+			if(is_array($category))
+			{
+				if(in_array($id_category, array_keys($category)))
+				{
+					$ids_categories = implode(", ",array_keys($category));
+					break;
+				}
+			}
+			
+		}
+		
+		
+		
+		 $Boardmenu = Boardmenu::model()->findAll("status = :status and id_type in ({$ids_categories})",array(':status'=>Boardmenu::STATUS_PUBLISH));
 		
 		
 		if(!$debug)
@@ -455,20 +474,33 @@ class JsonController extends Controller
 		{ 
 			$result = 1;
 			
+			
+			
 			$n = 0;
+			$tmp = 0;
+			$section = -1;
+			$ex_section;
 			foreach($Boardmenu as $menu)
 			{
+				if($ex_section!=$menu->id_type) 
+				{
+					$n = 0;
+						$ex_section=$menu->id_type;
+					$section++;
+				}
+				
+				
 				$bulk_parameter = SiteHelper::getParameter($menu->bulk_parameter);
 				
-				$response['menu'][$n]['type']['id'] = $menu->id_type;
-				$response['menu'][$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
+				$response['menu'][$section][$n]['type']['id'] = $menu->id_type;
+				$response['menu'][$section][$n]['type']['title'] = SiteHelper::getCategoryBoardmenu($menu->id_type);
 				//$response['menu'][$n]['title'] = $menu->title;
-				$response['menu'][$n]['title'] = $menu->title;
-				$response['menu'][$n]['title'] .= ($menu->bulk>0) ? ", {$menu->bulk} {$bulk_parameter}" : "";
-				$response['menu'][$n]['category'] = $menu->id_type;
-				$response['menu'][$n]['price'] = $menu->price;
-				$response['image'][$n]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
-				$response['image'][$n]['title'] = "{$response['menu'][$n]['title']}, {$menu->price} руб.";
+				$response['menu'][$section][$n]['title'] = $menu->title;
+				$response['menu'][$section][$n]['title'] .= ($menu->bulk>0) ? ", {$menu->bulk} {$bulk_parameter}" : "";
+				$response['menu'][$section][$n]['category'] = $menu->id_type;
+				$response['menu'][$section][$n]['price'] = $menu->price;
+				$response['image'][$tmp][$n]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
+				$response['image'][$tmp][$n]['title'] = "{$response['menu'][$n]['title']}, {$menu->price} руб.";
 				if( count($menu->composition) > 0 )
 				{
 					$z = 0;
@@ -486,13 +518,17 @@ class JsonController extends Controller
 								
 								
 						}
-						$response['menu'][$n]['composition'] = $string_composition;
+						$response['menu'][$section][$n]['composition'] = $string_composition;
 				}
 				
-				$n++;
-			}
+				$response['section'][$section] = SiteHelper::getCategoryBoardmenu($menu->id_type);
 				
-				$response['category'] = SiteHelper::getCategoryBoardmenu();
+				$tmp++;
+				$n++;
+				
+			}
+				$response['rows'] = $tmp;
+				$response['category'] = SiteHelper::getCategoryBoardmenu(false,true);
 				
 			
 				
