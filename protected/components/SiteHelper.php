@@ -198,9 +198,16 @@ class SiteHelper {
 			$result = array();
 				foreach($array as $key => $value)
 				{
-					if(is_array($value)) $result[array_shift(array_keys($value))] = $key;
+					if(is_array($value)){
+						$result['id'][] = array_shift(array_keys($value));	
+						$result['category'][] = $key;	
+					}
 					else 
-						$result[$key] = $value;
+					{
+						$result['id'][] = $key;	
+						$result['category'][] = $value;	
+							
+					}
 				}
 			
 			return $result;
