@@ -195,15 +195,25 @@ class SiteHelper {
 		}
 		elseif($first_level and $n)
 		{
+			$i = 0;
 			foreach($array as $key => $value)
 			{
 				
 				
 					if(is_array($value))
 					{
-						return array_shift(array_keys($value));
+						if(in_array($n, array_keys($value)))
+						{
+							return $i;
+							break;
+						}
 					}
-					else return $key;
+					elseif($key == $n)
+					{
+						return $i;	
+					}
+					
+					$i++;
 			}
 		}
 		elseif($first_level and !$n)
