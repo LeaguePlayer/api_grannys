@@ -331,7 +331,7 @@ class JsonController extends Controller
 				$response['text'] = $page->content->value;
 				
 				
-				$response['text'] = preg_replace("/\<img.+src=('|\")(.*)('|\")/", "<img src=\"http://bar-tm.ru$2", $response['text']);
+				$response['text'] = preg_replace("/\<img.+src=('|\")(.*)('|\")/", "<img style='height:auto; width:260px;' src=\"http://bar-tm.ru$2", $response['text']);
 				
 				
 			
