@@ -172,7 +172,7 @@ class SiteHelper {
 						32=>"Пицца",
 					);
 		
-		if(is_numeric($n))
+		if(is_numeric($n) and !$first_level)
 		{	
 			foreach($array as $key => $value)
 			{
@@ -193,7 +193,20 @@ class SiteHelper {
 			}
 			
 		}
-		elseif($first_level)
+		elseif($first_level and $n)
+		{
+			foreach($array as $key => $value)
+			{
+				
+				
+					if(is_array($value))
+					{
+						return array_shift(array_keys($value));
+					}
+					else return $key;
+			}
+		}
+		elseif($first_level and !$n)
 		{
 			$result = array();
 				foreach($array as $key => $value)
