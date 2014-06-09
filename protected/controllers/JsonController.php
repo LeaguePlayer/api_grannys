@@ -498,6 +498,7 @@ class JsonController extends Controller
 				$response['menu'][$section][$n]['title'] .= ($menu->bulk>0) ? ", {$menu->bulk} {$bulk_parameter}" : "";
 				$response['menu'][$section][$n]['category'] = $menu->id_type;
 				$response['menu'][$section][$n]['price'] = $menu->price;
+				$response['menu'][$section][$n]['serial_number'] = $tmp;
 				$response['menu'][$section][$n]['id_category'] = SiteHelper::getCategoryBoardmenu($menu->id_type, true);
 				$response['image'][$tmp]['url'] = "{$domain}{$menu->getImageUrl('medium')}";
 				$response['image'][$tmp]['title'] = "{$response['menu'][$section][$n]['title']}, {$menu->price} руб.";
