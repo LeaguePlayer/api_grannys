@@ -273,7 +273,11 @@ class JsonController extends Controller
 		{ 
 			$result = 1;
 			
-			   $child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id not in (93, 31, 32, 34, 43, 44, 101, 45, 71, 72, 42)", 'params' => array( ':id_page'=>$id_page ) ) );
+			   
+			   if($id_page = 26)
+			   	$child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id in (26, 2, 3, 6, 8, 12 ,69 )", 'params' => array( ':id_page'=>$id_page ) ) );
+			   else
+			   	$child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id not in (93, 31, 32, 34, 43, 44, 101, 45, 71, 72, 42)", 'params' => array( ':id_page'=>$id_page ) ) );
 			   
 			  // $childs = CHtml::listData($child_pages,'id','rusname');
 			   
