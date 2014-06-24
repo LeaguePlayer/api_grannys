@@ -343,7 +343,7 @@ class JsonController extends Controller
 				$response['title'] = $page->title;
 				if(count($childs)>0) $response['childs'] = $childs;
 				$response['type'] = $type_page;
-				$response['test'] = $page->content->value;
+          //$response['test'] = $page->content->value;
 				$response['text'] = "<div style='width:280px; word-wrap: break-word; -moz-hyphens: auto; -webkit-hyphens: auto; -ms-hyphens: auto;'>{$page->content->value}</div>";
 				
 				$doc = phpQuery::newDocument($page->content->value);
