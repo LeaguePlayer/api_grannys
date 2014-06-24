@@ -338,7 +338,7 @@ class JsonController extends Controller
 				$response['title'] = $page->title;
 				if(count($childs)>0) $response['childs'] = $childs;
 				$response['type'] = $type_page;
-				$response['text'] = $page->content->value;
+				$response['text'] = "<div style='width:280px;'>{$page->content->value}</div>";
 				
 				
 				$response['text'] = preg_replace("/\<img.+src=('|\")(.*)('|\")/", "<img style='height:auto; width:260px;' src=\"http://bar-tm.ru$2", $response['text']);
