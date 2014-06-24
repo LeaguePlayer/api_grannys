@@ -1,5 +1,7 @@
 <?php
 
+require_once(Yii::getPathOfAlias('application.extensions.phpquery.phpQuery').DIRECTORY_SEPARATOR.'phpQuery.php');
+
 class JsonController extends Controller
 {
 	protected $domain_grannys = "http://grannysbar.ru";
@@ -222,6 +224,7 @@ class JsonController extends Controller
 	// BarService Table
 	public function actionGetPage($page, $debug = false)
 	{
+		
 		$show_page = false;
 		$type_page = "table";
 		
@@ -343,11 +346,14 @@ class JsonController extends Controller
 				$response['test'] = $page->content->value;
 				$response['text'] = "<div style='width:280px; word-wrap: break-word; -moz-hyphens: auto; -webkit-hyphens: auto; -ms-hyphens: auto;'>{$page->content->value}</div>";
 				
-				
-				$response['text'] = preg_replace("/\<img.+src=('|\")(.*)('|\")/", "<img style='height:auto; width:260px;' src=\"http://bar-tm.ru$2", $response['text']);
-				
-				
-			
+				$doc = phpQuery::newDocument($page->content->value);
+				$images = pq('img');
+				foreach ( $images as $img ) {
+					$pqImg = pq($img);
+					$src = $pqImg->attr('src');
+					$pqImg->attr('src', "http://bar-tm.ru" . $src);
+				}
+				$response['text'] = $doc->htmlOuter();
 		}
 		else
 		{
