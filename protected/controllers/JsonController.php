@@ -342,6 +342,7 @@ class JsonController extends Controller
 				foreach ( $images as $img ) {
 					$pqImg = pq($img);
 					$src = $pqImg->attr('src');
+					$pqImg->attr('style', 'max-width:260px;');
 					$pqImg->attr('src', "http://bar-tm.ru" . $src);
 				}
 				$response['text'] = $doc->htmlOuter();
