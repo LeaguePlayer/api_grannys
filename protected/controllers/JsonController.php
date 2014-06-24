@@ -275,20 +275,26 @@ class JsonController extends Controller
 			
 			   
 			   if($id_page == 26)
-			   	$child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id in (26, 2, 3, 6, 8, 12 ,69 )", 'params' => array( ':id_page'=>$id_page ) ) );
+			   	$child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id in (2, 3, 6, 8, 12 ,69 )", 'params' => array( ':id_page'=>$id_page ) ) );
 			   else
 			   	$child_pages = BarservicePages::model()->findAll( array( 'order'=>'sort', 'condition' => "parent = :id_page and id not in (93, 31, 32, 34, 43, 44, 101, 45, 71, 72, 42)", 'params' => array( ':id_page'=>$id_page ) ) );
 			   
 			  // $childs = CHtml::listData($child_pages,'id','rusname');
 			   
-			   if(!$show_page)
+			   if(!$show_page and $id_page != 26)
 			   {
-				   $childs[0]['title'] = $p_title; 
-				   $childs[0]['id_page'] = $id_page; 
-				   
+                    $childs[0]['title'] = $p_title; 
+                   $childs[0]['id_page'] = $id_page; 
+                 $n = 1;
+                    
 			   }
-			   
+          elseif(!$show_page and $id_page == 26)
+          {
+            $n = 0;
+          }
+          else
 			   $n = 1;
+			   
 			   
 			   if($id_page==26)
 			   {
