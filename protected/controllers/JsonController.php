@@ -336,6 +336,8 @@ class JsonController extends Controller
 					$n++;
 				}
 			   
+    
+    
 			   
 			
     
@@ -343,15 +345,18 @@ class JsonController extends Controller
 				$response['title'] = $page->title;
 				if(count($childs)>0) $response['childs'] = $childs;
 				$response['type'] = $type_page;
+
           //$response['test'] = $page->content->value;
 				$response['text'] = "<div style='width:280px; word-wrap: break-word; -moz-hyphens: auto; -webkit-hyphens: auto; -ms-hyphens: auto;'>{$page->content->value}</div>";
+
 				
 				$doc = phpQuery::newDocument($page->content->value);
 				$images = pq('img');
 				foreach ( $images as $img ) {
 					$pqImg = pq($img);
 					$src = $pqImg->attr('src');
-					$pqImg->attr('style', 'max-width:260px; display:block;');
+					$pqImg->wrap('<div style="display:block;"></div>');
+					$pqImg->attr('style', 'max-width:260px;');
 					$pqImg->attr('src', "http://bar-tm.ru" . $src);
 				}
 				$response['text'] = $doc->htmlOuter();
